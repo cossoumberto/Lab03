@@ -19,7 +19,7 @@ public class Dictionary {
 				BufferedReader br = new BufferedReader(fr);
 				String word;
 				while((word = br.readLine())!=null) {
-					dictionary.add(word);
+					dictionary.add(word.toLowerCase());
 				}
 				br.close();
 			} catch (IOException ioe){
@@ -59,4 +59,6 @@ public class Dictionary {
 		
 		return richWordList;
 	}
+	
+	//public List<RichWord> spellCheckTestDichotomic(List<String> inputTextList)
 }
