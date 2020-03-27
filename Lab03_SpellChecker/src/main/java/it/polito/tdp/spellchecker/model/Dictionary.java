@@ -15,7 +15,7 @@ public class Dictionary {
 		
 		if(language.equals("English")) {
 			try {
-				FileReader fr = new FileReader("English.txt");
+				FileReader fr = new FileReader("C:\\Users\\um_bi\\git\\Lab03\\Lab03_SpellChecker\\src\\main\\resources\\English.txt");
 				BufferedReader br = new BufferedReader(fr);
 				String word;
 				while((word = br.readLine())!=null) {
@@ -26,9 +26,9 @@ public class Dictionary {
 				System.out.println("Errore nella lettura del file");
 			}
 		}
-		else if(language.equals("Italinao")) {
+		else if(language.equals("Italiano")) {
 			try {
-				FileReader fr = new FileReader("Italian.txt");
+				FileReader fr = new FileReader("C:\\Users\\um_bi\\git\\Lab03\\Lab03_SpellChecker\\src\\main\\resources\\Italian.txt");
 				BufferedReader br = new BufferedReader(fr);
 				String word;
 				while((word = br.readLine())!=null) {

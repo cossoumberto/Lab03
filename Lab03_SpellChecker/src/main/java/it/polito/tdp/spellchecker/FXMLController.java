@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.spellchecker.model.Dictionary;
 import it.polito.tdp.spellchecker.model.RichWord;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,6 +19,7 @@ import javafx.scene.control.TextArea;
 public class FXMLController {
 	
 	Dictionary dictionary;
+	String language = null;
 
     @FXML
     private ResourceBundle resources;
@@ -25,7 +28,7 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ComboBox<?> comboBox;
+    private ComboBox<String> comboBox;
 
     @FXML
     private TextArea txtInsert;
@@ -47,7 +50,7 @@ public class FXMLController {
 
     @FXML
     void chooseLanguage(ActionEvent event) {
-
+    	language = comboBox.getValue();
     }
 
     @FXML
@@ -66,23 +69,27 @@ public class FXMLController {
     	txtResult.clear();
     	int numWrong = 0;
     	dictionary  = new Dictionary ();
-    	dictionary.loadDictionary("English"); //provvisorio --> da specificare in comboBox
-    	String testoInserito = txtInsert.getText().toLowerCase().replace("\n"," ").replaceAll("[.,\\/#!$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]", "");
-    	String array [] = testoInserito.split(" ");
-    	List<String> paroleInserite = new ArrayList<>();
-    	for(String s : array)
-    		if(s.equals("")==false)
-    			paroleInserite.add(s);
-    	List<RichWord> listaRW = dictionary.spellCheckText(paroleInserite);
-    	for(RichWord rw : listaRW)
-    		if(rw.isCorrect()==false) {
-    			numWrong++;
-    			txtResult.appendText(rw.getWord()+"\n");
+    	if(language==null)
+    		txtResult.setText("Select language");
+    	else {
+	    	dictionary.loadDictionary(language);
+	    	String testoInserito = txtInsert.getText().toLowerCase().replace("\n"," ").replaceAll("[.,\\/#!?$%\\^&\\*;:{}=\\-_`~()\\[\\]\"]", "");
+	    	String array [] = testoInserito.split(" ");
+	    	List<String> paroleInserite = new ArrayList<>();
+		    	for(String s : array)
+		    		if(s.equals("")==false)
+		    			paroleInserite.add(s);
+	    	List<RichWord> listaRW = dictionary.spellCheckText(paroleInserite);
+		    	for(RichWord rw : listaRW)
+		    		if(rw.isCorrect()==false) {
+		    			numWrong++;
+		    			txtResult.appendText(rw.getWord()+"\n");
     		}
-    	lblErrors.setText("The text contains " + numWrong + " errors");
-    	
-    	long elapsedNanos = System.nanoTime() - startTime;
-    	lblTime.setText("Spell check completed in " + (elapsedNanos)+ " nenoseconds \n");
+	    	long elapsedNanos = System.nanoTime() - startTime;
+	    	lblTime.setText("Spell check completed in " + elapsedNanos + " nenoseconds");
+	    	
+	    	lblErrors.setText("The text contains " + numWrong + " errors");
+    	}
     }
 
     @FXML
@@ -94,7 +101,7 @@ public class FXMLController {
         assert lblErrors != null : "fx:id=\"lblErrors\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnClear != null : "fx:id=\"btnClear\" was not injected: check your FXML file 'Scene.fxml'.";
         assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'Scene.fxml'.";
-
+        comboBox.getItems().addAll("Italiano", "English");
     }
 }
 
